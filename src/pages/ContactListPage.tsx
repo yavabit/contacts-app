@@ -1,8 +1,8 @@
 import React, {memo, useState} from 'react';
 import {CommonPageProps} from './types';
 import {Col, Row} from 'react-bootstrap';
-import {ContactCard} from 'src/components/ContactCard';
-import {FilterForm, FilterFormValues} from 'src/components/FilterForm';
+import {ContactCard} from 'src/shared/components/ContactCard';
+import {FilterForm, FilterFormValues} from 'src/shared/components/FilterForm';
 import {ContactDto} from 'src/types/dto/ContactDto';
 
 

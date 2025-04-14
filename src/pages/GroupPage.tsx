@@ -4,9 +4,9 @@ import {Col, Row} from 'react-bootstrap';
 import {useParams} from 'react-router-dom';
 import {ContactDto} from 'src/types/dto/ContactDto';
 import {GroupContactsDto} from 'src/types/dto/GroupContactsDto';
-import {GroupContactsCard} from 'src/components/GroupContactsCard';
-import {Empty} from 'src/components/Empty';
-import {ContactCard} from 'src/components/ContactCard';
+import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
+import {Empty} from 'src/shared/components/Empty';
+import {ContactCard} from 'src/shared/components/ContactCard';
 
 export const GroupPage = memo<CommonPageProps>(({
   contactsState,

@@ -1,7 +1,7 @@
 import React, {memo} from 'react';
 import {CommonPageProps} from './types';
 import {Col, Row} from 'react-bootstrap';
-import {GroupContactsCard} from 'src/components/GroupContactsCard';
+import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
 
 export const GroupListPage = memo<CommonPageProps>(({contactsState, groupContactsState}) => {
   return (
