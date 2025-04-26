@@ -1,4 +1,6 @@
-[
+import { GroupContactsDto } from "src/types/dto/GroupContactsDto";
+
+export const DATA_GROUP_CONTACT: GroupContactsDto[]= [
   {
     "id": "fcc6cb46-1fbd-4a4b-bad6-b134a1eb2f50",
     "name": "sed-nostrum-nisi",

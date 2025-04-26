@@ -1,16 +1,18 @@
-import React, {memo} from 'react';
-import {CommonPageProps} from './types';
 import {Col, Row} from 'react-bootstrap';
 import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
+import { useGetStore } from 'src/shared/hooks/useGetStore';
 
-export const GroupListPage = memo<CommonPageProps>(({contactsState, groupContactsState}) => {
+export const GroupListPage = () => {
+
+  const groupContacts = useGetStore().groupContacts
+
   return (
     <Row xxl={4}>
-      {groupContactsState[0].map((groupContacts) => (
-        <Col key={groupContacts.id}>
-          <GroupContactsCard groupContacts={groupContacts} withLink />
+      {groupContacts.map((groupContact) => (
+        <Col key={groupContact.id}>
+          <GroupContactsCard groupContacts={groupContact} withLink />
         </Col>
       ))}
     </Row>
   );
-});
+};

@@ -1,4 +1,6 @@
-[
+import { ContactDto } from "src/types/dto/ContactDto";
+
+export const DATA_CONTACT: ContactDto[] = [
   {
     "id": "ecd667da-0513-4dd5-ba50-e7cc69f6573c",
     "address": "Apt. 964",

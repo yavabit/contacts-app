@@ -2,6 +2,8 @@ import "./App.scss";
 import { ThemeProvider } from "react-bootstrap";
 import { BrowserRouter } from "react-router-dom";
 import { Router } from "./Router/Router";
+import { Provider } from "react-redux";
+import { store } from "src/redux/store";
 
 export const App = () => {
 	return (
@@ -10,7 +12,9 @@ export const App = () => {
 			minBreakpoint="xxs"
 		>
 			<BrowserRouter>
-				<Router />
+				<Provider store={store}>
+					<Router />
+				</Provider>
 			</BrowserRouter>
 		</ThemeProvider>
 	);

@@ -1,16 +1,20 @@
-import React from 'react';
-import {Container, Nav, Navbar} from 'react-bootstrap';
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { NavLink } from "react-router-dom";
 
 export const MainMenu = () => {
-  return (
-    <Navbar bg="light" expand="lg">
-      <Container>
-        <Navbar.Brand href="/" ><h1>Книга контактов</h1></Navbar.Brand>
-        <Nav className="me-auto">
-          <Nav.Link href="/groups">Группы</Nav.Link>
-          <Nav.Link href="/favorit">Избранное</Nav.Link>
-        </Nav>
-      </Container>
-    </Navbar>
-  );
-}
+	return (
+		<Navbar bg="light" expand="lg">
+			<Container>
+				<Navbar.Brand>
+					<NavLink to={"/"}>
+						<h1>Книга контактов</h1>
+					</NavLink>
+				</Navbar.Brand>
+				<Nav className="me-auto">
+					<NavLink to={"/groups"}>Группы</NavLink>
+					<NavLink to={"/favorite"}>Избранное</NavLink>
+				</Nav>
+			</Container>
+		</Navbar>
+	);
+};

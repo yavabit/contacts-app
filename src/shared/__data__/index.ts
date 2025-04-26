@@ -1,4 +1,6 @@
-import DATA_CONTACT from './contacts.json';
-import DATA_GROUP_CONTACT from './group-contacts.json';
+import {DATA_CONTACT} from './contacts';
+import {DATA_GROUP_CONTACT} from './group-contacts';
 
-export {DATA_CONTACT, DATA_GROUP_CONTACT};
+const FAVORITE_CONTACTS = DATA_CONTACT.slice(0, 4)
+
+export {DATA_CONTACT, DATA_GROUP_CONTACT, FAVORITE_CONTACTS};
