@@ -1,14 +1,17 @@
 import {Col, Row} from 'react-bootstrap';
+import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
 import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
-import { useGetStore } from 'src/shared/hooks/useGetStore';
 
 export const GroupListPage = () => {
+  const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
 
-  const groupContacts = useGetStore().groupContacts
+  if(groupContactsFetching) {
+    return <div>Загрзука...</div>
+  }
 
   return (
     <Row xxl={4}>
-      {groupContacts.map((groupContact) => (
+      {groupContacts?.map((groupContact) => (
         <Col key={groupContact.id}>
           <GroupContactsCard groupContacts={groupContact} withLink />
         </Col>

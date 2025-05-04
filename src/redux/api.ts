@@ -1,0 +1,1 @@
+export const baseUrl = "https://fs04.gcfiles.net/fileservice/file/download/a/177331/sc/"

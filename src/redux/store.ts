@@ -1,16 +1,20 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import { contactsReducer } from "./contactsReducer";
-import { groupContactsReducer } from "./groupContactsReducer";
-import { favoriteReducer } from "./favoriteReducer";
-import {thunk} from 'redux-thunk';
+import { combineReducers } from "redux";
+import { configureStore } from "@reduxjs/toolkit";
+import { contactsMiddleware, contactsReducerPath, contactsReducer } from "./contacts";
+import { groupContactsReducerPath, groupContactsReducer, groupContactsMiddleware } from "./groupContacts";
+import { favoriteReducer } from "./favoriteContacts";
 
 const rootReducer = combineReducers({
-      contacts: contactsReducer,
-      favorite: favoriteReducer,
-      groupContacts: groupContactsReducer,
-})
+	favorite: favoriteReducer,
+	[contactsReducerPath]: contactsReducer,
+	[groupContactsReducerPath]: groupContactsReducer
+});
 
-//@ts-expect-error
-export const store = createStore(rootReducer, applyMiddleware(thunk))
+export const store = configureStore({
+	reducer: rootReducer,
+	middleware(getDefaultMiddleware) {
+		return getDefaultMiddleware().concat([contactsMiddleware, groupContactsMiddleware]);
+	},
+});
 
 export type RootState = ReturnType<typeof rootReducer>;

@@ -5,26 +5,37 @@ import {ContactDto} from 'src/types/dto/ContactDto';
 import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
 import {Empty} from 'src/shared/components/Empty';
 import {ContactCard} from 'src/shared/components/ContactCard';
-import { useGetStore } from 'src/shared/hooks/useGetStore';
 import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
+import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
+import { useGetContactsQuery } from 'src/redux/contacts';
 
 export const GroupPage = () => {
   const {groupId} = useParams<{ groupId: string }>();
-  const {contacts, groupContacts} = useGetStore()
+
+  const { data: contacts, isFetching: contactsFetching } = useGetContactsQuery() 
+  const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
+
+  const loading = contactsFetching || groupContactsFetching;
 
   const [contactsFiltered, setContactsFiltered] = useState<ContactDto[]>([]);
   const [groupContactsCard, setGroupContactsCard] = useState<GroupContactsDto>();
 
   useEffect(() => {
-    const findGroup = groupContacts.find(({id}) => id === groupId);
-    setGroupContactsCard(groupContacts.find(({id}) => id === groupId))
-    setContactsFiltered(() => {
-      if (findGroup) {
-        return contacts.data.filter(({id}) => findGroup.contactIds.includes(id))
-      }
-      return [];
-    });
+    if(groupContacts && contacts) {
+      const findGroup = groupContacts.find(({id}) => id === groupId);
+      setGroupContactsCard(groupContacts.find(({id}) => id === groupId))
+      setContactsFiltered(() => {
+        if (findGroup) {
+          return contacts.filter(({id}) => findGroup.contactIds.includes(id))
+        }
+        return [];
+      });
+    }
   }, [groupId]);
+
+  if(loading) {
+    return <div>Загрузка...</div>
+  }
 
   return (
     <Row className="g-4">

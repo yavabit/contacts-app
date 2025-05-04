@@ -3,18 +3,17 @@ import { ContactCard } from "src/shared/components/ContactCard";
 import { FilterForm, FilterFormValues } from "src/shared/components/FilterForm";
 import { ContactDto } from "src/types/dto/ContactDto";
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "src/redux/hooks";
-import { setContactsActionCreator } from "src/redux/actions";
+import { useGetContactsQuery } from "src/redux/contacts";
+import { useGetGroupContactsQuery } from "src/redux/groupContacts";
 
 export const ContactListPage = () => {
-	//const { contacts, groupContacts } = useGetStore();
-	const { contacts, groupContacts } = useAppSelector(state => state);
-	const dispatch = useAppDispatch()
+	const { data: contacts, isFetching: contactsFetching } = useGetContactsQuery() 
+	const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
 
-	const [contactsFiltered, setContactsFiltered] = useState(contacts.data)
+	const [contactsFiltered, setContactsFiltered] = useState(contacts ?? [])
 
 	const onSubmit = (fv: Partial<FilterFormValues>) => {
-		let findContacts: ContactDto[] = contacts.data;
+		let findContacts: ContactDto[] = contacts ?? [];
 
 		if (fv.name) {
 			const fvName = fv.name.toLowerCase();
@@ -24,7 +23,7 @@ export const ContactListPage = () => {
 		}
 
 		if (fv.groupId) {
-			const groupContact = groupContacts.find(({ id }) => id === fv.groupId);
+			const groupContact = groupContacts?.find(({ id }) => id === fv.groupId);
 
 			if (groupContact) {
 				findContacts = findContacts.filter(({ id }) =>
@@ -37,18 +36,12 @@ export const ContactListPage = () => {
 	};
 
 	useEffect(() => {
-		if(contacts.data.length === 0) {
-			dispatch(setContactsActionCreator())
-		}
-	}, [])
-
-	useEffect(() => {
-		if(contacts.data.length > 0) {
-			setContactsFiltered(contacts.data)
+		if(contacts && contacts.length > 0) {
+			setContactsFiltered(contacts)
 		}
 	}, [contacts])
 
-	if(contacts.loading) {
+	if(contactsFetching || groupContactsFetching) {
 		return <div>Загрузка...</div>
 	}
 
