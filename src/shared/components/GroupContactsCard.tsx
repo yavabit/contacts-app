@@ -24,7 +24,7 @@ export const GroupContactsCard = memo<GroupContactsCardProps>(({
         </Card.Header>
         <Card.Body>{description}</Card.Body>
         <Card.Img variant="top" src={photo} />
-        <Card.Footer>Contacts: {contactIds.length}</Card.Footer>
+        {contactIds && <Card.Footer>Contacts: {contactIds.length}</Card.Footer>}
       </Card>
     );
   }

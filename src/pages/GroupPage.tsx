@@ -25,7 +25,7 @@ export const GroupPage = () => {
       const findGroup = groupContacts.find(({id}) => id === groupId);
       setGroupContactsCard(groupContacts.find(({id}) => id === groupId))
       setContactsFiltered(() => {
-        if (findGroup) {
+        if (findGroup && findGroup.contactIds) {
           return contacts.filter(({id}) => findGroup.contactIds.includes(id))
         }
         return [];
@@ -36,7 +36,7 @@ export const GroupPage = () => {
   if(loading) {
     return <div>Загрузка...</div>
   }
-
+  console.log(groupContacts);
   return (
     <Row className="g-4">
       {groupContacts ? (

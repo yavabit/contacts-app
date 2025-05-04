@@ -10,7 +10,7 @@ export const contactsApi = createApi({
     tagTypes: ['contacts'],
     endpoints: build => ({
         getContacts: build.query<ContactDto[], void>({
-            query: () => "/0/h/f1e98b0d70d16a909818b03b72415733.json",
+            query: () => "/385/h/0afc05779dcbbebd7055a1d87b8c7c6b.json",
             providesTags: ['contacts']
         })
     })

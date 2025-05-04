@@ -10,7 +10,7 @@ export const groupContactsApi = createApi({
     tagTypes: ['groupContacts'],
     endpoints: build => ({
         getGroupContacts: build.query<GroupContactsDto[], void>({
-            query: () => "/385/h/0afc05779dcbbebd7055a1d87b8c7c6b.json",
+            query: () => "/0/h/f1e98b0d70d16a909818b03b72415733.json",
             providesTags: ['groupContacts']
         })
     })
