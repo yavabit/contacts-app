@@ -1,16 +1,21 @@
-import React, {memo} from 'react';
-import {CommonPageProps} from './types';
 import {Col, Row} from 'react-bootstrap';
-import {GroupContactsCard} from 'src/components/GroupContactsCard';
+import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
+import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
 
-export const GroupListPage = memo<CommonPageProps>(({contactsState, groupContactsState}) => {
+export const GroupListPage = () => {
+  const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
+
+  if(groupContactsFetching) {
+    return <div>Загрзука...</div>
+  }
+
   return (
     <Row xxl={4}>
-      {groupContactsState[0].map((groupContacts) => (
-        <Col key={groupContacts.id}>
-          <GroupContactsCard groupContacts={groupContacts} withLink />
+      {groupContacts?.map((groupContact) => (
+        <Col key={groupContact.id}>
+          <GroupContactsCard groupContacts={groupContact} withLink />
         </Col>
       ))}
     </Row>
   );
-});
+};

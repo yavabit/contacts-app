@@ -1,32 +1,42 @@
-import React, {memo, useEffect, useState} from 'react';
-import {CommonPageProps} from './types';
+import { useEffect, useState} from 'react';
 import {Col, Row} from 'react-bootstrap';
 import {useParams} from 'react-router-dom';
 import {ContactDto} from 'src/types/dto/ContactDto';
-import {GroupContactsDto} from 'src/types/dto/GroupContactsDto';
-import {GroupContactsCard} from 'src/components/GroupContactsCard';
-import {Empty} from 'src/components/Empty';
-import {ContactCard} from 'src/components/ContactCard';
+import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
+import {Empty} from 'src/shared/components/Empty';
+import {ContactCard} from 'src/shared/components/ContactCard';
+import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
+import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
+import { useGetContactsQuery } from 'src/redux/contacts';
 
-export const GroupPage = memo<CommonPageProps>(({
-  contactsState,
-  groupContactsState
-}) => {
+export const GroupPage = () => {
   const {groupId} = useParams<{ groupId: string }>();
-  const [contacts, setContacts] = useState<ContactDto[]>([]);
-  const [groupContacts, setGroupContacts] = useState<GroupContactsDto>();
+
+  const { data: contacts, isFetching: contactsFetching } = useGetContactsQuery() 
+  const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
+
+  const loading = contactsFetching || groupContactsFetching;
+
+  const [contactsFiltered, setContactsFiltered] = useState<ContactDto[]>([]);
+  const [groupContactsCard, setGroupContactsCard] = useState<GroupContactsDto>();
 
   useEffect(() => {
-    const findGroup = groupContactsState[0].find(({id}) => id === groupId);
-    setGroupContacts(findGroup);
-    setContacts(() => {
-      if (findGroup) {
-        return contactsState[0].filter(({id}) => findGroup.contactIds.includes(id))
-      }
-      return [];
-    });
+    if(groupContacts && contacts) {
+      const findGroup = groupContacts.find(({id}) => id === groupId);
+      setGroupContactsCard(groupContacts.find(({id}) => id === groupId))
+      setContactsFiltered(() => {
+        if (findGroup && findGroup.contactIds) {
+          return contacts.filter(({id}) => findGroup.contactIds.includes(id))
+        }
+        return [];
+      });
+    }
   }, [groupId]);
 
+  if(loading) {
+    return <div>Загрузка...</div>
+  }
+  console.log(groupContacts);
   return (
     <Row className="g-4">
       {groupContacts ? (
@@ -34,13 +44,13 @@ export const GroupPage = memo<CommonPageProps>(({
           <Col xxl={12}>
             <Row xxl={3}>
               <Col className="mx-auto">
-                <GroupContactsCard groupContacts={groupContacts} />
+                {groupContactsCard && <GroupContactsCard groupContacts={groupContactsCard} />}
               </Col>
             </Row>
           </Col>
           <Col>
             <Row xxl={4} className="g-4">
-              {contacts.map((contact) => (
+              {contactsFiltered.map((contact) => (
                 <Col key={contact.id}>
                   <ContactCard contact={contact} withLink />
                 </Col>
@@ -51,4 +61,4 @@ export const GroupPage = memo<CommonPageProps>(({
       ) : <Empty />}
     </Row>
   );
-});
+};
