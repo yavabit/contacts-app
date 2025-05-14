@@ -1,23 +1,22 @@
 import {Formik} from 'formik';
 import {Button, Col, Form, InputGroup, Row} from 'react-bootstrap';
-import React, {memo} from 'react';
+import {memo} from 'react';
 import {FormikConfig} from 'formik/dist/types';
-import {GroupContactsDto} from 'src/types/dto/GroupContactsDto';
+import { contactsStore } from 'src/store/contactsStore';
 
 export interface FilterFormValues {
   name: string,
   groupId: string
 }
 
-interface FilterFormProps extends FormikConfig<Partial<FilterFormValues>> {
-  groupContactsList: GroupContactsDto[]
-}
+interface FilterFormProps extends FormikConfig<Partial<FilterFormValues>> {}
 
 export const FilterForm = memo<FilterFormProps>(({
   onSubmit,
-  initialValues = {},
-  groupContactsList
+  initialValues = {}
 }) => {
+  const { data: groupContacts } = contactsStore
+
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>
       {({handleChange, handleSubmit}) => (
@@ -41,9 +40,9 @@ export const FilterForm = memo<FilterFormProps>(({
                 aria-label="Поиск по группе"
                 onChange={handleChange}
               >
-                <option>Open this select menu</option>
-                {groupContactsList.map((groupContacts) => (
-                  <option value={groupContacts.id} key={groupContacts.id}>{groupContacts.name}</option>
+                <option>Не выбрано</option>
+                {groupContacts?.map((contact) => (
+                  <option value={contact.id} key={contact.id}>{contact.name}</option>
                 ))}
               </Form.Select>
             </Col>
