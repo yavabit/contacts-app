@@ -3,14 +3,16 @@ import { ContactCard } from "src/shared/components/ContactCard";
 import { FilterForm, FilterFormValues } from "src/shared/components/FilterForm";
 import { ContactDto } from "src/types/dto/ContactDto";
 import { useEffect, useState } from "react";
-import { useGetContactsQuery } from "src/redux/contacts";
-import { useGetGroupContactsQuery } from "src/redux/groupContacts";
+import { contactsStore } from "src/store/contactsStore";
+import { observer } from "mobx-react-lite";
+import { groupsStore } from "src/store/groupsStore";
 
-export const ContactListPage = () => {
-	const { data: contacts, isFetching: contactsFetching } = useGetContactsQuery() 
-	const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
+export const ContactListPage = observer(() => {
+	const { data: contacts, loading: contactsFetching } = contactsStore
+	const { data: groupContacts, loading: groupContactsFetching } = groupsStore
 
 	const [contactsFiltered, setContactsFiltered] = useState(contacts ?? [])
+
 
 	const onSubmit = (fv: Partial<FilterFormValues>) => {
 		let findContacts: ContactDto[] = contacts ?? [];
@@ -41,6 +43,11 @@ export const ContactListPage = () => {
 		}
 	}, [contacts])
 
+	useEffect(() => {
+		contactsStore.data === null && contactsStore.fetchContacts()
+		groupsStore.data === null && groupsStore.fetchGroups()
+	}, [])
+
 	if(contactsFetching || groupContactsFetching) {
 		return <div>Загрузка...</div>
 	}
@@ -64,4 +71,4 @@ export const ContactListPage = () => {
 			</Col>
 		</Row>
 	);
-};
+});

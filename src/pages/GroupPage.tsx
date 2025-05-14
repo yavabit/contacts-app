@@ -6,14 +6,14 @@ import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
 import {Empty} from 'src/shared/components/Empty';
 import {ContactCard} from 'src/shared/components/ContactCard';
 import { GroupContactsDto } from 'src/types/dto/GroupContactsDto';
-import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
-import { useGetContactsQuery } from 'src/redux/contacts';
+import { contactsStore } from 'src/store/contactsStore';
+import { groupsStore } from 'src/store/groupsStore';
 
 export const GroupPage = () => {
   const {groupId} = useParams<{ groupId: string }>();
 
-  const { data: contacts, isFetching: contactsFetching } = useGetContactsQuery() 
-  const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
+  const { data: contacts, loading: contactsFetching } = contactsStore
+  const { data: groupContacts, loading: groupContactsFetching } = groupsStore
 
   const loading = contactsFetching || groupContactsFetching;
 
@@ -32,6 +32,11 @@ export const GroupPage = () => {
       });
     }
   }, [groupId]);
+
+  useEffect(() => {
+		contactsStore.data === null && contactsStore.fetchContacts()
+		groupsStore.data === null && groupsStore.fetchGroups()
+	}, [])
 
   if(loading) {
     return <div>Загрузка...</div>

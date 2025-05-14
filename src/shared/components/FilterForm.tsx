@@ -2,7 +2,7 @@ import {Formik} from 'formik';
 import {Button, Col, Form, InputGroup, Row} from 'react-bootstrap';
 import {memo} from 'react';
 import {FormikConfig} from 'formik/dist/types';
-import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
+import { contactsStore } from 'src/store/contactsStore';
 
 export interface FilterFormValues {
   name: string,
@@ -15,7 +15,7 @@ export const FilterForm = memo<FilterFormProps>(({
   onSubmit,
   initialValues = {}
 }) => {
-  const { data: groupContacts } = useGetGroupContactsQuery()
+  const { data: groupContacts } = contactsStore
 
   return (
     <Formik initialValues={initialValues} onSubmit={onSubmit}>

@@ -1,9 +1,14 @@
+import { useEffect } from 'react';
 import {Col, Row} from 'react-bootstrap';
-import { useGetGroupContactsQuery } from 'src/redux/groupContacts';
 import {GroupContactsCard} from 'src/shared/components/GroupContactsCard';
+import { groupsStore } from 'src/store/groupsStore';
 
 export const GroupListPage = () => {
-  const { data: groupContacts, isFetching: groupContactsFetching } = useGetGroupContactsQuery()
+  const { data: groupContacts, loading: groupContactsFetching } = groupsStore
+
+  useEffect(() => {
+		groupsStore.data === null && groupsStore.fetchGroups()
+	}, [])
 
   if(groupContactsFetching) {
     return <div>Загрзука...</div>
